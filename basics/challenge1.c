@@ -1,4 +1,4 @@
-// Compile Cmd: gcc -g -o challenge1 challenge1.c util.c
+// Compile Cmd: gcc -g -o challenge1.o challenge1.c util.c
 #include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
