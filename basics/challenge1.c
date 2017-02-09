@@ -8,19 +8,29 @@ int main(int argc, char *argv[])
 {
     char *hex = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
     char *expected = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t";
+    char hex_len = strnlen(hex, 100);
     
-    char *hex_decoded = decode_hex(hex);
-    printf("Message: %s\n", hex_decoded);
+    // Two hex values per byte of data
+    char hex_decoded[(hex_len / 2) + 1];
+    // 4 chars represent 3 bytes of data
+    int b64_len = (4 * (hex_len / 2) / 3) + 1;
+    char b64_encoded[b64_len]; 
     
-    char *b64_encoded = encode_b64(hex_decoded);
+    if (decode_hex(hex, hex_decoded, hex_len) == 0) {
+        printf("Message: %s\n", hex_decoded);
+    } else {
+        printf("Invalid hex string length. Exiting.\n");
+        exit(1);
+    }    
     
-    if (strcmp(b64_encoded, expected) == 0)
+    encode_b64(hex_decoded, b64_encoded, b64_len);
+    printf("%s\n", b64_encoded);
+    
+    if (strcmp(b64_encoded, expected) == 0) {
         printf("PASS\n");
-    else
+    } else {
         printf("FAIL\n");
-        
-    free(hex_decoded);
-    free(b64_encoded);
+    }        
     
     return 0;
 }

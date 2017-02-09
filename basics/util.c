@@ -57,15 +57,16 @@ char itob64(int val)
     return b64;
 }
 
-char *decode_hex(char *hex_str)
+int decode_hex(char *hex_str, char *hex_decoded, int length)
 {
-    int hex_str_len = strlen(hex_str);
-    // Two hex values to byte of data
-    char *decoded = (char *)malloc((hex_str_len / 2) * sizeof(char));
+    int status = -1;
+    if (length % 2 != 0) {
+        return status;
+    }
     
     char *ch = hex_str;
 
-    for (int i=0; i < hex_str_len / 2; i++) {
+    for (int i=0; i < length / 2; i++) {
         int val = 0;
         char hex_buf[3];
         
@@ -74,31 +75,26 @@ char *decode_hex(char *hex_str)
         hex_buf[2] = '\0';
         
         val = htoi(hex_buf);
-        decoded[i] = val;
+        hex_decoded[i] = val;
         ch += 2;
     }
+    status = 0;
+    hex_decoded[length / 2] = '\0';
     
-    return decoded;
+    return status;
 }
 
-char *encode_b64(char *data)
-{
-    // 4 chars represent 3 bytes
-    int data_length = strlen(data);
-    int encoded_buf_length = (4 * strlen(data) / 3) + 1;
-    char *encoded = (char *)malloc(encoded_buf_length * sizeof(char));
-    encoded[encoded_buf_length] = '\0';
-    
-    for (int i=0; i < data_length / 3; i++) {
+void encode_b64(char *data, char *b64_encoded, int length)
+{    
+    for (int i=0; i < length / 3; i++) {
         int bytes = 0;
         bytes += data[3 * i] << 16;
         bytes += data[3 * i + 1] << 8;
         bytes += data[3 * i + 2];
-        encoded[4 * i] = itob64(bytes >> 18);
-        encoded[4 * i + 1] = itob64(bytes >> 12 & 63);
-        encoded[4 * i + 2] = itob64(bytes >> 6 & 63);
-        encoded[4 * i + 3] = itob64(bytes & 63);
+        b64_encoded[4 * i] = itob64(bytes >> 18);
+        b64_encoded[4 * i + 1] = itob64(bytes >> 12 & 63);
+        b64_encoded[4 * i + 2] = itob64(bytes >> 6 & 63);
+        b64_encoded[4 * i + 3] = itob64(bytes & 63);
     }
-    
-    return encoded;
+    b64_encoded[length-1] = '\0';
 }
