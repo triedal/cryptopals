@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
     }    
     
     encode_b64(hex_decoded, b64_encoded, b64_len);
-    printf("%s\n", b64_encoded);
     
     if (strcmp(b64_encoded, expected) == 0) {
         printf("PASS\n");

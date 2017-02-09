@@ -92,9 +92,9 @@ void encode_b64(char *data, char *b64_encoded, int length)
         bytes += data[3 * i + 1] << 8;
         bytes += data[3 * i + 2];
         b64_encoded[4 * i] = itob64(bytes >> 18);
-        b64_encoded[4 * i + 1] = itob64(bytes >> 12 & 63);
-        b64_encoded[4 * i + 2] = itob64(bytes >> 6 & 63);
-        b64_encoded[4 * i + 3] = itob64(bytes & 63);
+        b64_encoded[4 * i + 1] = itob64((bytes >> 12) & 0x3f);
+        b64_encoded[4 * i + 2] = itob64((bytes >> 6) & 0x3f);
+        b64_encoded[4 * i + 3] = itob64(bytes & 0x3f);
     }
     b64_encoded[length-1] = '\0';
 }
