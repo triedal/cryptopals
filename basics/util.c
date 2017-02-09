@@ -2,6 +2,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+char *fixed_xor(const char* str1, const char* str2, int length)
+{
+    char *result = (char *)malloc(length * sizeof(char));
+    
+    for (int i=0; i < length; i++) {
+        result[i] = str1[i] ^ str2[i];
+    }
+    return result;
+}
+
 int htoi(const char* ptr)
 {
     int value = 0;
