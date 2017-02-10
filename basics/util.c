@@ -4,11 +4,12 @@
 
 char *fixed_xor(const char* str1, const char* str2, int length)
 {
-    char *result = (char *)malloc(length * sizeof(char));
+    char *result = (char *)malloc((length + 1) * sizeof(char));
     
     for (int i=0; i < length; i++) {
         result[i] = str1[i] ^ str2[i];
     }
+    result[length] = '\0';
     return result;
 }
 
